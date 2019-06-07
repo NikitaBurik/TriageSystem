@@ -13,12 +13,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +71,12 @@ public class BluetoothActivity extends AppCompatActivity {
     int colour = 0;
     int category =0;
 
+    StartTriageFragment startTriageFragment;
+    CareflightTriageFragment careflightTriageFragment;
+    SieveTriageFragment sieveTriageFragment;
+
+
+    private String[] data = {"SYSTEM S.T.A.R.T.", "CAREFLIGHT TRIAGE", "TRIAGE SIEVE"};
 
     TextView timer;
     private int seconds;
@@ -80,6 +89,47 @@ public class BluetoothActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         findViewsByIds();
+
+        startTriageFragment = new StartTriageFragment();
+        careflightTriageFragment = new CareflightTriageFragment();
+        sieveTriageFragment = new SieveTriageFragment();
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, data);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        spinner.setAdapter(adapter);
+
+
+        // заголовок
+        spinner.setPrompt("Wybierz metodę");
+        // выделяем элемент
+        spinner.setSelection(0);
+        // устанавливаем обработчик нажатия
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+
+                // показываем позиция нажатого элемента
+                Toast.makeText(getBaseContext(), "Position = " + position, Toast.LENGTH_SHORT).show();
+                switch (position){
+                    case 0:
+                        setFragment(startTriageFragment);
+                        break;
+                    case 1:
+                        setFragment(careflightTriageFragment);
+                        break;
+                    case 2:
+                        setFragment(sieveTriageFragment);
+                        break;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
 
         //check device support bluetooth or not
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -106,6 +156,13 @@ public class BluetoothActivity extends AppCompatActivity {
         runTimer();
 
     }
+
+    public void setFragment(Fragment fragment){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_frame,fragment);
+        fragmentTransaction.commitAllowingStateLoss();
+    }
+
 
     private Handler handler = new Handler(new Handler.Callback() {
 
@@ -180,7 +237,7 @@ public class BluetoothActivity extends AppCompatActivity {
         } else {
             if (answer.getText().equals("1")) {
                 if (Integer.valueOf(puls.getText().toString()) > 0) {
-                    if (Integer.valueOf(breath.getText().toString()) < 30) {
+                    if (Integer.valueOf(breath.getText().toString()) < 30 && Integer.valueOf(breath.getText().toString())>8) {
                         category = 2;
                         colour = Color.YELLOW;
                     } else {
@@ -198,6 +255,9 @@ public class BluetoothActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    public void Accept(View view) {
     }
 
 
@@ -292,7 +352,7 @@ public class BluetoothActivity extends AppCompatActivity {
     private void findViewsByIds() {
         status = (TextView) findViewById(R.id.status);
         btnConnect = (Button) findViewById(R.id.btn_connect);
-//        listView = (ListView) findViewById(R.id.list);
+//      listView = (ListView) findViewById(R.id.list);
         textEx = (TextView) findViewById(R.id.example);
 
         ///// VIEWS OF ACTIVITY MAIN LAYOUT
@@ -349,7 +409,7 @@ public class BluetoothActivity extends AppCompatActivity {
 
 
 
-                public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_ENABLE_BLUETOOTH:
                 if (resultCode == Activity.RESULT_OK) {
@@ -421,4 +481,6 @@ public class BluetoothActivity extends AppCompatActivity {
             }
         }
     };
+
+
 }
