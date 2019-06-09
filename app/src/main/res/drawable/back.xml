@@ -7,15 +7,15 @@
         android:top="2dp">
         <shape android:shape="rectangle" >
             <stroke
-                android:width="3dp"
+                android:width="2dp"
                 android:color="#C1000000" />
 
             <solid android:color="#00FFFFFF" />
 
-            <padding android:left="7dp"
-                android:right="7dp"
-                android:top="7dp"
-                android:bottom="7dp" />
+            <padding android:left="5dp"
+                android:right="5dp"
+                android:top="5dp"
+                android:bottom="5dp" />
         </shape>
     </item>
 

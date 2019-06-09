@@ -46,15 +46,12 @@ public class BluetoothActivity extends AppCompatActivity {
     private ArrayAdapter<String> chatAdapter;
     private ArrayList<String> chatMessages;
     private BluetoothAdapter bluetoothAdapter;
-
     public static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_OBJECT = 4;
     public static final int MESSAGE_TOAST = 5;
     public static final String DEVICE_OBJECT = "device_name";
-
-
     private static final int REQUEST_ENABLE_BLUETOOTH = 1;
     private ChatController chatController;
     private BluetoothDevice connectingDevice;
@@ -70,23 +67,24 @@ public class BluetoothActivity extends AppCompatActivity {
     TextView colorTriage;
     int colour = 0;
     int category =0;
+    int numberVictim = 1;
 
     StartTriageFragment startTriageFragment;
     CareflightTriageFragment careflightTriageFragment;
     SieveTriageFragment sieveTriageFragment;
-
 
     private String[] data = {"SYSTEM S.T.A.R.T.", "CAREFLIGHT TRIAGE", "TRIAGE SIEVE"};
 
     TextView timer;
     private int seconds;
     private boolean running;
+    Button accept;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide(); //<< this
-
         setContentView(R.layout.activity_main);
         findViewsByIds();
 
@@ -94,24 +92,18 @@ public class BluetoothActivity extends AppCompatActivity {
         careflightTriageFragment = new CareflightTriageFragment();
         sieveTriageFragment = new SieveTriageFragment();
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, data);
         //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(R.layout.spinner_item);
         spinner.setAdapter(adapter);
-
-
         // заголовок
-        spinner.setPrompt("Wybierz metodę");
         // выделяем элемент
         spinner.setSelection(0);
         // устанавливаем обработчик нажатия
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-
                 // показываем позиция нажатого элемента
                 Toast.makeText(getBaseContext(), "Position = " + position, Toast.LENGTH_SHORT).show();
                 switch (position){
@@ -130,7 +122,6 @@ public class BluetoothActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-
         //check device support bluetooth or not
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
@@ -145,14 +136,22 @@ public class BluetoothActivity extends AppCompatActivity {
                 showPrinterPickDialog();
             }
         });
-        running = true;
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), AcceptedVictimsActivity.class);
+                intent.putExtra("color", valueOf(colour));
+                intent.putExtra("numberVictim",numberVictim);
+                startActivity(intent);
+            }
+        });
 
+        running = true;
         //set chat adapter
         chatMessages = new ArrayList<>();
         chatAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, chatMessages);
 //        listView.setAdapter(chatAdapter);
         //textt.setText(chatMessages.get(chatMessages.size()-1));
-
         runTimer();
 
     }
@@ -205,8 +204,9 @@ public class BluetoothActivity extends AppCompatActivity {
                     diapress.setText(dataArray.get(2));
                     breath.setText(dataArray.get(3));
                     capilar.setText(dataArray.get(4));
-                    walking.setText("0");
-                    answer.setText("0");
+                    walking.setText(dataArray.get(5));
+                    answer.setText(dataArray.get(6));
+
                     colorTriage.setBackgroundColor(colour);
 
                     TriageHelper();
@@ -256,10 +256,6 @@ public class BluetoothActivity extends AppCompatActivity {
             }
         }
     }
-
-    public void Accept(View view) {
-    }
-
 
     public void showPrinterPickDialog() {
         dialog = new Dialog(this);
@@ -352,9 +348,9 @@ public class BluetoothActivity extends AppCompatActivity {
     private void findViewsByIds() {
         status = (TextView) findViewById(R.id.status);
         btnConnect = (Button) findViewById(R.id.btn_connect);
+        accept = (Button)findViewById(R.id.accept);
 //      listView = (ListView) findViewById(R.id.list);
         textEx = (TextView) findViewById(R.id.example);
-
         ///// VIEWS OF ACTIVITY MAIN LAYOUT
         puls = (TextView) findViewById(R.id.puls);
         syspress = (TextView) findViewById(R.id.syspress);
@@ -365,25 +361,6 @@ public class BluetoothActivity extends AppCompatActivity {
         answer = (TextView) findViewById(R.id.answer);
         colorTriage = (TextView) findViewById(R.id.triageauto);
 
-        ////////////////////////////////////
-
-//
-//        inputLayout = (TextInputLayout) findViewById(R.id.input_layout);
-
-//        View btnSend = findViewById(R.id.btn_send);
-//
-//        btnSend.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (inputLayout.getEditText().getText().toString().equals("")) {
-//                    Toast.makeText(BluetoothActivity.this, "Please input some texts", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    //TODO: here
-////                    sendMessage(inputLayout.getEditText().getText().toString()+ seconds);
-////                    inputLayout.getEditText().setText("");
-//                }
-//            }
-//        });
     }
 
     private void runTimer(){

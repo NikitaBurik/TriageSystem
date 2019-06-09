@@ -1,5 +1,6 @@
 package com.example.triagesystem;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import static java.lang.String.valueOf;
 
 
 public class SieveTriageFragment extends Fragment implements View.OnClickListener {
@@ -32,6 +35,9 @@ public class SieveTriageFragment extends Fragment implements View.OnClickListene
 
     TextView color;
 
+    Button akceptacja;
+
+    int colorInt = 0;
     private String[] questions = {"Chodzi?","Częstość oddechów 10-29/min ","Tętno>120/min lub nawrót>2 s.","Oddycha?"};
 
     @Override
@@ -63,6 +69,7 @@ public class SieveTriageFragment extends Fragment implements View.OnClickListene
         tak3 =  contentView.findViewById(R.id.tak3);
         nie4 =  contentView.findViewById(R.id.nie4);
         tak4 =  contentView.findViewById(R.id.tak4);
+        akceptacja = contentView.findViewById(R.id.acceptation);
 
 
 //        color = findViewById(R.id.color);
@@ -89,6 +96,8 @@ public class SieveTriageFragment extends Fragment implements View.OnClickListene
         nie3.setOnClickListener(this);
         tak4.setOnClickListener(this);
         nie4.setOnClickListener(this);
+        akceptacja.setOnClickListener(this);
+
         return contentView;
 
     }
@@ -98,6 +107,11 @@ public class SieveTriageFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         Button clickedButton = (Button) v;
         switch (clickedButton.getId()) {
+            case R.id.acceptation:
+                //color2.setBackgroundColor(colorInt);
+                Intent intent = new Intent(getActivity(), AcceptedVictimsActivity.class);
+                intent.putExtra("color", valueOf(colorInt));
+                startActivity(intent);
             case R.id.start:
                 color.setBackgroundColor(Color.WHITE);
 
@@ -109,6 +123,8 @@ public class SieveTriageFragment extends Fragment implements View.OnClickListene
 
             case R.id.tak:
                 color.setBackgroundColor(Color.GREEN);
+                colorInt = Color.GREEN;
+
                 break;
 
             case R.id.nie:
@@ -128,6 +144,7 @@ public class SieveTriageFragment extends Fragment implements View.OnClickListene
 
             case R.id.nie1:
                 color.setBackgroundColor(Color.RED);
+                colorInt = Color.RED;
                 break;
 
             case R.id.tak2:
@@ -136,19 +153,23 @@ public class SieveTriageFragment extends Fragment implements View.OnClickListene
                 quest3.setVisibility(View.VISIBLE);
                 quest3.setText(questions[3]);
                 color.setBackgroundColor(Color.RED);
+                colorInt = Color.RED;
+
                 break;
 
             case R.id.nie2:
                 color.setBackgroundColor(Color.YELLOW);
-
+                colorInt = Color.YELLOW;
                 break;
 
             case R.id.tak3:
                 color.setBackgroundColor(Color.RED);
+                colorInt = Color.RED;
                 break;
 
             case R.id.nie3:
                 color.setBackgroundColor(Color.BLACK);
+                colorInt = Color.BLACK;
                 break;
 
 

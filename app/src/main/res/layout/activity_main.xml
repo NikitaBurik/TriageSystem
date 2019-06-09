@@ -35,6 +35,7 @@
             android:id="@+id/btn_connect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="#D50000"
             android:ellipsize="start"
             android:text="Connect"
             android:textSize="18sp" />
@@ -124,7 +125,7 @@
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center_horizontal|center_vertical"
                             android:text="SYS"
-                            android:textSize="30dp"
+                            android:textSize="24sp"
                             app:autoSizeTextType="none" />
 
                         <TextView
@@ -134,7 +135,7 @@
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center_horizontal|center_vertical"
                             android:text="DIA"
-                            android:textSize="30dp"
+                            android:textSize="24sp"
                             app:autoSizeTextType="none" />
 
 
@@ -258,9 +259,9 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="sans-serif-black"
                     android:gravity="center_horizontal|center_vertical"
-                    android:text="AUTO KATEGORYZACJA OFIAR: "
+                    android:text="AUTOMATYCZNY TRIAŻ"
                     android:textSize="24sp" />
 
                 <TableRow
@@ -281,59 +282,67 @@
                         android:id="@+id/accept"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:onClick="Accept"
+                        android:backgroundTint="#0091EA"
                         android:text="Akceptuję" />
 
                 </TableRow>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Wybierz metodę"
-                android:textSize="30sp" />
-
-            <Spinner
-                android:id="@+id/spinner"
-                style="@android:style/Widget.Spinner.DropDown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contextClickable="false"
-                android:popupElevation="35dp"
-
-                android:scrollbarSize="35dp"
-                android:spinnerMode="dropdown">
-
-            </Spinner>
-
-
-
-            <FrameLayout
-                android:id="@+id/main_frame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </FrameLayout>
-
-
         </LinearLayout>
 
-
-
-
-
     </ScrollView>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:scrollbarSize="10dp"
+        android:text="MANUALNY TRIAŻ"
+        android:textSize="24sp" />
+<TableRow
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="WYBIERZ METODĘ:"
+        android:textSize="20sp"
+        android:visibility="visible" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        style="@android:style/Widget.Spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contextClickable="false"
+        android:popupElevation="5dp"
+        android:scrollbarSize="5dp"
+        android:spinnerMode="dropdown"/>
+
+</TableRow>
+
+
+        <FrameLayout
+            android:id="@+id/main_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </FrameLayout>
 
     <TextView
         android:id="@+id/example"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="DATA FROM ANOTHA DEVICE"
-        android:textSize="30sp"
+        android:text="data from another device"
+        android:textSize="18sp"
         android:visibility="visible" />
 
 

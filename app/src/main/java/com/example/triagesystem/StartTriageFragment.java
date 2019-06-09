@@ -1,6 +1,8 @@
 package com.example.triagesystem;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -9,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import static java.lang.String.valueOf;
 
 
 public class StartTriageFragment extends Fragment implements View.OnClickListener {
@@ -30,10 +34,15 @@ public class StartTriageFragment extends Fragment implements View.OnClickListene
     Button tak4;
     Button nie4;
 
+
     Button starter;
 
     TextView color;
+    //TextView color2;
 
+    Button akceptacja;
+
+    int colorInt = 0;
     private String[] questions = {"Czy poszkodowany chodzi?", "Nie chodzi, czy oddycha?",
             "Oddycha 8-30/min ?","Nawrót kapilarny < 2 sec. ?","Czy spełnia proste polecenia?"};
 
@@ -54,6 +63,8 @@ public class StartTriageFragment extends Fragment implements View.OnClickListene
 //        quest3 = findViewById(R.id.question3);
 //        quest4 = findViewById(R.id.question4);
         color =  contentView.findViewById(R.id.color);
+ //       color2 =  contentView.findViewById(R.id.color22);
+
         starter =  contentView.findViewById(R.id.start);
         tak =   contentView.findViewById(R.id.tak);
         nie =   contentView.findViewById(R.id.nie);
@@ -66,7 +77,7 @@ public class StartTriageFragment extends Fragment implements View.OnClickListene
         nie4 =  contentView.findViewById(R.id.nie4);
         tak4 =  contentView.findViewById(R.id.tak4);
 
-
+        akceptacja = contentView.findViewById(R.id.acceptation);
 //        color = findViewById(R.id.color);
 //        starter = findViewById(R.id.start);
 //        tak = findViewById(R.id.tak);
@@ -91,6 +102,7 @@ public class StartTriageFragment extends Fragment implements View.OnClickListene
         nie3.setOnClickListener(this);
         tak4.setOnClickListener(this);
         nie4.setOnClickListener(this);
+        akceptacja.setOnClickListener(this);
         return contentView;
 
     }
@@ -99,6 +111,12 @@ public class StartTriageFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         Button clickedButton = (Button) v;
         switch (clickedButton.getId()) {
+            case R.id.acceptation:
+                //color2.setBackgroundColor(colorInt);
+                Intent intent = new Intent(getActivity(), AcceptedVictimsActivity.class);
+                intent.putExtra("color", valueOf(colorInt));
+                startActivity(intent);
+
             case R.id.start:
                 color.setBackgroundColor(Color.WHITE);
 
@@ -110,6 +128,7 @@ public class StartTriageFragment extends Fragment implements View.OnClickListene
 
             case R.id.tak:
                 color.setBackgroundColor(Color.GREEN);
+                colorInt = Color.GREEN;
                 break;
 
             case R.id.nie:
@@ -129,6 +148,7 @@ public class StartTriageFragment extends Fragment implements View.OnClickListene
 
             case R.id.nie1:
                 color.setBackgroundColor(Color.BLACK);
+                colorInt = Color.BLACK;
                 break;
 
             case R.id.tak2:
@@ -140,6 +160,7 @@ public class StartTriageFragment extends Fragment implements View.OnClickListene
 
             case R.id.nie2:
                 color.setBackgroundColor(Color.RED);
+                colorInt = Color.RED;
                 break;
 
             case R.id.tak3:
@@ -151,14 +172,17 @@ public class StartTriageFragment extends Fragment implements View.OnClickListene
 
             case R.id.nie3:
                 color.setBackgroundColor(Color.RED);
+                colorInt = Color.RED;
                 break;
 
             case R.id.tak4:
                 color.setBackgroundColor(Color.YELLOW);
+                colorInt = Color.YELLOW;
                 break;
 
             case R.id.nie4:
                 color.setBackgroundColor(Color.RED);
+                colorInt = Color.RED;
                 break;
         }
     }
